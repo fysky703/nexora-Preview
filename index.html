@@ -853,7 +853,7 @@ function renderVideo(url){
   if(/\.m3u8(?:$|\?)/i.test(s)&&window.Hls&&Hls.isSupported()){let h=new Hls();h.loadSource(s);h.attachMedia(v);v._hls=h}else v.load();
   v.play().catch(()=>{});
 }
-function renderSiteSettings(d){siteSettings=d||{};profileName.textContent=d.profileName||"UNiFY_CODE";marqueeText.textContent=d.marqueeText||"UNiFY CODE PROJECT";let u=d.profileImageUrl||"";profileImg.style.display=u?"block":"none";profileFallback.style.display=u?"none":"grid";if(u)profileImg.src=u;renderVideo(d.videoUrl||"")}
+function renderSiteSettings(d){siteSettings=d||{};profileName.textContent=d.profileName||"UNiFY_CODE";marqueeText.textContent=d.marqueeText||" NEXORA ";let u=d.profileImageUrl||"";profileImg.style.display=u?"block":"none";profileFallback.style.display=u?"none":"grid";if(u)profileImg.src=u;renderVideo(d.videoUrl||"")}
 async function loadSiteSettings(){try{if(!db){renderSiteSettings({});return}let s=await db.collection("nexora_settings").doc("site").get();renderSiteSettings(s.exists?s.data():{})}catch(e){console.error(e);renderSiteSettings({})}}
 async function load(){try{if(!db){items=[];render([]);return}let s=await db.collection("nexora_content").get();items=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));render(items);if(location.hash.startsWith("#post="))openPost(decodeURIComponent(location.hash.slice(6)),false)}catch(e){console.error(e);items=[];render([])}}
 year.textContent=new Date().getFullYear();updateDeviceStatus();updateBattery();updateRegion();addEventListener("online",updateDeviceStatus);addEventListener("offline",updateDeviceStatus);loadSiteSettings();load();
