@@ -7,23 +7,288 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script><script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 
-img {
-    -webkit-user-drag: none;
-    user-drag: none;
-}
-* {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
+/* =========================
+   SECURITY OVERLAY
+========================= */
+
+.security-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(10, 10, 10, 0.78);
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    animation: overlayFade .25s ease;
 }
 
-input,
-textarea {
-    user-select: text;
-    -webkit-user-select: text;
+
+/* =========================
+   MAIN PANEL
+========================= */
+
+.warning-panel {
+    width: min(850px, 94vw);
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffef5 0%,
+            #fffdf0 50%,
+            #fff9dc 100%
+        );
+
+    border: 3px solid #e7cf68;
+
+    border-radius: 30px;
+
+    padding: 45px 50px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 35px rgba(231,207,104,.35);
+
+    transform: scale(.82);
+    opacity: 0;
+
+    animation: warningPop .45s cubic-bezier(.17,.89,.32,1.28)
+               forwards;
 }
 
 
+/* =========================
+   HEADER
+========================= */
+
+.warning-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* =========================
+   ORANGE WARNING ICON
+========================= */
+
+.warning-icon {
+    flex-shrink: 0;
+
+    width: 82px;
+    height: 72px;
+
+    background: #e78300;
+
+    clip-path: polygon(
+        50% 0%,
+        96% 88%,
+        4% 88%
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    filter:
+        drop-shadow(0 7px 8px rgba(0,0,0,.2));
+
+    animation: iconPulse 1.8s ease-in-out infinite;
+}
+
+.warning-icon span {
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 47px;
+    font-weight: 900;
+
+    margin-top: 14px;
+}
+
+
+/* =========================
+   KHMER TITLE
+========================= */
+
+.warning-title {
+    color: #d87500;
+
+    font-size: clamp(30px, 5vw, 52px);
+
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    text-shadow:
+        0 2px 1px rgba(0,0,0,.04);
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.warning-message {
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 3px solid rgba(0,0,0,.08);
+
+    color: #3b3b3b;
+
+    font-size: clamp(17px, 2.5vw, 23px);
+
+    line-height: 1.8;
+
+    text-align: center;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.warning-button {
+    display: block;
+
+    margin: 30px auto 0;
+
+    padding: 13px 34px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #e78300;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 15px rgba(231,131,0,.3);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.warning-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(231,131,0,.4);
+}
+
+.warning-button:active {
+    transform: scale(.95);
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes overlayFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes warningPop {
+
+    0% {
+        opacity: 0;
+        transform:
+            scale(.75)
+            translateY(40px);
+    }
+
+    60% {
+        opacity: 1;
+        transform:
+            scale(1.04)
+            translateY(-5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+@keyframes iconPulse {
+
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .security-overlay {
+        padding: 15px;
+    }
+
+    .warning-panel {
+        width: 94vw;
+
+        padding: 30px 22px;
+
+        border-radius: 25px;
+    }
+
+    .warning-header {
+        gap: 18px;
+    }
+
+    .warning-icon {
+        width: 62px;
+        height: 57px;
+    }
+
+    .warning-icon span {
+        font-size: 36px;
+        margin-top: 11px;
+    }
+
+    .warning-title {
+        font-size: 27px;
+    }
+
+    .warning-message {
+        font-size: 16px;
+    }
+}
 
 
 :root{--bg1:#241a45;--bg2:#140f2b;--bg3:#050308;--glass:rgba(24,18,45,.55);--line:rgba(124,92,255,.35);--text:#f5f9ff;--muted:#a9a8c9;--accent:#24e7c9;--on-accent:#04211c;--shadow:0 20px 60px rgba(5,3,10,.45)}
@@ -939,291 +1204,6 @@ year.textContent=new Date().getFullYear();updateDeviceStatus();updateBattery();u
 
     </div>
 </div>
-
-<style>
-/* =========================
-   SECURITY OVERLAY
-========================= */
-
-.security-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 999999999;
-
-    display: none;
-    align-items: center;
-    justify-content: center;
-
-    padding: 25px;
-
-    background: rgba(10, 10, 10, 0.78);
-
-    backdrop-filter: blur(7px);
-    -webkit-backdrop-filter: blur(7px);
-
-    animation: overlayFade .25s ease;
-}
-
-
-/* =========================
-   MAIN PANEL
-========================= */
-
-.warning-panel {
-    width: min(850px, 94vw);
-
-    background:
-        linear-gradient(
-            135deg,
-            #fffef5 0%,
-            #fffdf0 50%,
-            #fff9dc 100%
-        );
-
-    border: 3px solid #e7cf68;
-
-    border-radius: 30px;
-
-    padding: 45px 50px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.55),
-        0 0 35px rgba(231,207,104,.35);
-
-    transform: scale(.82);
-    opacity: 0;
-
-    animation: warningPop .45s cubic-bezier(.17,.89,.32,1.28)
-               forwards;
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
-.warning-header {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-
-/* =========================
-   ORANGE WARNING ICON
-========================= */
-
-.warning-icon {
-    flex-shrink: 0;
-
-    width: 82px;
-    height: 72px;
-
-    background: #e78300;
-
-    clip-path: polygon(
-        50% 0%,
-        96% 88%,
-        4% 88%
-    );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    filter:
-        drop-shadow(0 7px 8px rgba(0,0,0,.2));
-
-    animation: iconPulse 1.8s ease-in-out infinite;
-}
-
-.warning-icon span {
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 47px;
-    font-weight: 900;
-
-    margin-top: 14px;
-}
-
-
-/* =========================
-   KHMER TITLE
-========================= */
-
-.warning-title {
-    color: #d87500;
-
-    font-size: clamp(30px, 5vw, 52px);
-
-    font-weight: 700;
-
-    line-height: 1.25;
-
-    text-shadow:
-        0 2px 1px rgba(0,0,0,.04);
-}
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-.warning-message {
-    margin-top: 30px;
-
-    padding-top: 25px;
-
-    border-top: 3px solid rgba(0,0,0,.08);
-
-    color: #3b3b3b;
-
-    font-size: clamp(17px, 2.5vw, 23px);
-
-    line-height: 1.8;
-
-    text-align: center;
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-.warning-button {
-    display: block;
-
-    margin: 30px auto 0;
-
-    padding: 13px 34px;
-
-    border: none;
-
-    border-radius: 14px;
-
-    background: #e78300;
-
-    color: white;
-
-    font-size: 18px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 6px 15px rgba(231,131,0,.3);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-}
-
-.warning-button:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 22px rgba(231,131,0,.4);
-}
-
-.warning-button:active {
-    transform: scale(.95);
-}
-
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes overlayFade {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes warningPop {
-
-    0% {
-        opacity: 0;
-        transform:
-            scale(.75)
-            translateY(40px);
-    }
-
-    60% {
-        opacity: 1;
-        transform:
-            scale(1.04)
-            translateY(-5px);
-    }
-
-    100% {
-        opacity: 1;
-        transform:
-            scale(1)
-            translateY(0);
-    }
-}
-
-@keyframes iconPulse {
-
-    0%, 100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.08);
-    }
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 600px) {
-
-    .security-overlay {
-        padding: 15px;
-    }
-
-    .warning-panel {
-        width: 94vw;
-
-        padding: 30px 22px;
-
-        border-radius: 25px;
-    }
-
-    .warning-header {
-        gap: 18px;
-    }
-
-    .warning-icon {
-        width: 62px;
-        height: 57px;
-    }
-
-    .warning-icon span {
-        font-size: 36px;
-        margin-top: 11px;
-    }
-
-    .warning-title {
-        font-size: 27px;
-    }
-
-    .warning-message {
-        font-size: 16px;
-    }
-}
-</style>
 
 
 const securityWarning =
