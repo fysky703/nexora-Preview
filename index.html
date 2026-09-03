@@ -975,6 +975,8 @@ document.addEventListener("touchstart", function (e) {
     }
 }, { passive: false });
 </script>
+
+
 <!-- SECURITY WARNING -->
 <div id="securityWarning">
     <div class="warning-box">
@@ -991,6 +993,11 @@ document.addEventListener("touchstart", function (e) {
         </button>
     </div>
 </div>
+
+<!-- SECURITY SIREN SOUND -->
+<audio id="securitySiren" preload="auto">
+    <source src="https://www.audiosparx.com/sa/tzamp/20260903041209/module/jplay/stream.cfm/sound_iid.284838/cs.e4994edd5e76a5324dddd7b68e608c44/internal.1/preview.1/284838.mp3" type="audio/mpeg">
+</audio>
 
 <style>
 #securityWarning {
@@ -1021,6 +1028,7 @@ document.addEventListener("touchstart", function (e) {
 .warning-icon {
     font-size: 55px;
     margin-bottom: 10px;
+    animation: warningPulse .8s infinite;
 }
 
 .warning-box h2 {
@@ -1054,24 +1062,54 @@ document.addEventListener("touchstart", function (e) {
         transform: scale(1);
     }
 }
+
+@keyframes warningPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
 </style>
 
 <script>
 (function () {
 
+    /* SHOW WARNING + SIREN */
     function showSecurityWarning() {
+
         const warning = document.getElementById("securityWarning");
+        const siren = document.getElementById("securitySiren");
 
         if (warning) {
             warning.classList.add("show");
         }
+
+        if (siren) {
+            siren.currentTime = 0;
+            siren.volume = 1.0;
+
+            siren.play().catch(function () {
+                console.log("Siren autoplay blocked by browser.");
+            });
+        }
     }
 
+
+    /* CLOSE WARNING + STOP SIREN */
     window.closeSecurityWarning = function () {
+
         const warning = document.getElementById("securityWarning");
+        const siren = document.getElementById("securitySiren");
 
         if (warning) {
             warning.classList.remove("show");
+        }
+
+        if (siren) {
+            siren.pause();
+            siren.currentTime = 0;
         }
     };
 
@@ -1116,7 +1154,8 @@ document.addEventListener("touchstart", function (e) {
 
         if (
             e.key === "F12" ||
-            (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+            (e.ctrlKey && e.shiftKey &&
+                ["I", "J", "C"].includes(e.key.toUpperCase())) ||
             (e.ctrlKey && e.key.toUpperCase() === "U")
         ) {
             e.preventDefault();
@@ -1148,6 +1187,7 @@ document.addEventListener("touchstart", function (e) {
     }, { passive: true });
 
 
+    /* CANCEL LONG PRESS WHEN MOVING */
     document.addEventListener("touchmove", function (e) {
 
         if (!e.touches || !e.touches[0]) return;
@@ -1155,7 +1195,6 @@ document.addEventListener("touchstart", function (e) {
         const dx = Math.abs(e.touches[0].clientX - startX);
         const dy = Math.abs(e.touches[0].clientY - startY);
 
-        /* បើអ្នក Scroll → កុំបង្ហាញ Alert */
         if (dx > 10 || dy > 10) {
             clearTimeout(pressTimer);
         }
@@ -1174,6 +1213,4 @@ document.addEventListener("touchstart", function (e) {
 
 })();
 </script>
-
-
 </body></html>
