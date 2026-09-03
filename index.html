@@ -975,4 +975,205 @@ document.addEventListener("touchstart", function (e) {
     }
 }, { passive: false });
 </script>
+<!-- SECURITY WARNING -->
+<div id="securityWarning">
+    <div class="warning-box">
+        <div class="warning-icon">⚠️</div>
+
+        <h2>មុខងារនេះត្រូវបានបិទ</h2>
+
+        <p>
+            សូមកុំចម្លង ឬទាញយកមាតិកាពីគេហទំព័រនេះ។
+        </p>
+
+        <button onclick="closeSecurityWarning()">
+            យល់ព្រម
+        </button>
+    </div>
+</div>
+
+<style>
+#securityWarning {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
+    background: rgba(0,0,0,.65);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#securityWarning.show {
+    display: flex;
+}
+
+.warning-box {
+    width: min(380px, 100%);
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    animation: warningPop .25s ease;
+}
+
+.warning-icon {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.warning-box h2 {
+    margin: 5px 0 10px;
+    font-size: 22px;
+}
+
+.warning-box p {
+    margin: 0 0 20px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.warning-box button {
+    border: 0;
+    background: #f59e0b;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+@keyframes warningPop {
+    from {
+        opacity: 0;
+        transform: scale(.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+</style>
+
+<script>
+(function () {
+
+    function showSecurityWarning() {
+        const warning = document.getElementById("securityWarning");
+
+        if (warning) {
+            warning.classList.add("show");
+        }
+    }
+
+    window.closeSecurityWarning = function () {
+        const warning = document.getElementById("securityWarning");
+
+        if (warning) {
+            warning.classList.remove("show");
+        }
+    };
+
+
+    /* RIGHT CLICK */
+    document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        showSecurityWarning();
+    }, { passive: false });
+
+
+    /* SELECT TEXT */
+    document.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+        showSecurityWarning();
+    }, { passive: false });
+
+
+    /* COPY */
+    document.addEventListener("copy", function (e) {
+        e.preventDefault();
+        showSecurityWarning();
+    }, { passive: false });
+
+
+    /* CUT */
+    document.addEventListener("cut", function (e) {
+        e.preventDefault();
+        showSecurityWarning();
+    }, { passive: false });
+
+
+    /* DRAG */
+    document.addEventListener("dragstart", function (e) {
+        e.preventDefault();
+        showSecurityWarning();
+    }, { passive: false });
+
+
+    /* KEYBOARD */
+    document.addEventListener("keydown", function (e) {
+
+        if (
+            e.key === "F12" ||
+            (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+            (e.ctrlKey && e.key.toUpperCase() === "U")
+        ) {
+            e.preventDefault();
+            e.stopPropagation();
+            showSecurityWarning();
+        }
+
+    }, true);
+
+
+    /* MOBILE LONG PRESS */
+    let pressTimer = null;
+    let startX = 0;
+    let startY = 0;
+
+    document.addEventListener("touchstart", function (e) {
+
+        if (!e.touches || !e.touches[0]) return;
+
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+
+        clearTimeout(pressTimer);
+
+        pressTimer = setTimeout(function () {
+            showSecurityWarning();
+        }, 700);
+
+    }, { passive: true });
+
+
+    document.addEventListener("touchmove", function (e) {
+
+        if (!e.touches || !e.touches[0]) return;
+
+        const dx = Math.abs(e.touches[0].clientX - startX);
+        const dy = Math.abs(e.touches[0].clientY - startY);
+
+        /* បើអ្នក Scroll → កុំបង្ហាញ Alert */
+        if (dx > 10 || dy > 10) {
+            clearTimeout(pressTimer);
+        }
+
+    }, { passive: true });
+
+
+    document.addEventListener("touchend", function () {
+        clearTimeout(pressTimer);
+    }, { passive: true });
+
+
+    document.addEventListener("touchcancel", function () {
+        clearTimeout(pressTimer);
+    }, { passive: true });
+
+})();
+</script>
+
+
 </body></html>
