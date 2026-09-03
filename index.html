@@ -1179,176 +1179,50 @@ updateHeroClock();setInterval(updateHeroClock,1000);
 year.textContent=new Date().getFullYear();updateDeviceStatus();updateBattery();updateRegion();addEventListener("online",updateDeviceStatus);addEventListener("offline",updateDeviceStatus);loadSiteSettings();load();
 
 
-
-const securityWarning =
-    document.getElementById("securityWarning");
+</script>
 
 
-/* SHOW WARNING */
-function showSecurityWarning() {
-
-    securityWarning.style.display = "flex";
-
-    document.body.style.overflow = "hidden";
-}
-
-
-/* CLOSE WARNING */
-function closeSecurityWarning() {
-
-    securityWarning.style.display = "none";
-
-    document.body.style.overflow = "";
-}
-
-
-/* =========================
-   RIGHT CLICK
-========================= */
-
-document.addEventListener("contextmenu", function(e) {
-
+<script>
+/* Disable right click */
+document.addEventListener("contextmenu", function (e) {
     e.preventDefault();
-
-    showSecurityWarning();
-
-});
+}, { passive: false });
 
 
-/* =========================
-   LONG PRESS MOBILE
-========================= */
-
-let longPressTimer;
-
-document.addEventListener("touchstart", function() {
-
-    longPressTimer = setTimeout(function() {
-
-        showSecurityWarning();
-
-    }, 650);
-
-}, { passive: true });
+/* Disable text selection */
+document.addEventListener("selectstart", function (e) {
+    e.preventDefault();
+}, { passive: false });
 
 
-document.addEventListener("touchend", function() {
-
-    clearTimeout(longPressTimer);
-
-});
-
-
-document.addEventListener("touchmove", function() {
-
-    clearTimeout(longPressTimer);
-
-});
+/* Disable dragging */
+document.addEventListener("dragstart", function (e) {
+    e.preventDefault();
+}, { passive: false });
 
 
-/* =========================
-   DEVTOOLS SHORTCUTS
-========================= */
-
-document.addEventListener("keydown", function(e) {
-
-    const key = e.key.toLowerCase();
+/* Disable copy */
+document.addEventListener("copy", function (e) {
+    e.preventDefault();
+}, { passive: false });
 
 
-    /* F12 */
-    if (e.key === "F12") {
-
-        e.preventDefault();
-
-        showSecurityWarning();
-
-        return;
-    }
+/* Disable cut */
+document.addEventListener("cut", function (e) {
+    e.preventDefault();
+}, { passive: false });
 
 
-    /* CTRL + SHIFT + I */
-    if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === "i"
-    ) {
-
-        e.preventDefault();
-
-        showSecurityWarning();
-
-        return;
-    }
-
-
-    /* CTRL + SHIFT + J */
-    if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === "j"
-    ) {
-
-        e.preventDefault();
-
-        showSecurityWarning();
-
-        return;
-    }
-
-
-    /* CTRL + SHIFT + C */
-    if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === "c"
-    ) {
-
-        e.preventDefault();
-
-        showSecurityWarning();
-
-        return;
-    }
-
-
-    /* CTRL + U */
-    if (
-        e.ctrlKey &&
-        key === "u"
-    ) {
-
-        e.preventDefault();
-
-        showSecurityWarning();
-
-        return;
-    }
-
-});
-
-
-/* =========================
-   DEVTOOLS SIZE DETECTION
-========================= */
-
-setInterval(function() {
-
-    const widthDifference =
-        window.outerWidth - window.innerWidth;
-
-    const heightDifference =
-        window.outerHeight - window.innerHeight;
-
+/* Disable image save / long press where possible */
+document.addEventListener("touchstart", function (e) {
+    const el = e.target;
 
     if (
-        widthDifference > 160 ||
-        heightDifference > 160
+        el.tagName === "IMG" ||
+        el.tagName === "A"
     ) {
-
-        showSecurityWarning();
-
+        e.preventDefault();
     }
-
-}, 1000);
-
-</script></body></html>
+}, { passive: false });
+</script>
+</body></html>
