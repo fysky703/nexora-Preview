@@ -913,46 +913,488 @@ function updateHeroClock(){
 updateHeroClock();setInterval(updateHeroClock,1000);
 year.textContent=new Date().getFullYear();updateDeviceStatus();updateBattery();updateRegion();addEventListener("online",updateDeviceStatus);addEventListener("offline",updateDeviceStatus);loadSiteSettings();load();
 
+<!-- SECURITY WARNING -->
+<div id="securityWarning" class="security-overlay">
+    <div class="warning-panel">
 
-document.addEventListener("contextmenu", function (e) {
+        <div class="warning-header">
+            <div class="warning-icon">
+                <span>!</span>
+            </div>
+
+            <div class="warning-title">
+                មានការព្រមានការពារ
+            </div>
+        </div>
+
+        <div class="warning-message">
+            មុខងារនេះមិនត្រូវបានអនុញ្ញាត
+            <br>
+            សូមកុំប្រើ Inspect ឬសង្កត់ជាប់លើទំព័រនេះ។
+        </div>
+
+        <button class="warning-button" onclick="closeSecurityWarning()">
+            យល់ព្រម
+        </button>
+
+    </div>
+</div>
+
+<style>
+/* =========================
+   SECURITY OVERLAY
+========================= */
+
+.security-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(10, 10, 10, 0.78);
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    animation: overlayFade .25s ease;
+}
+
+
+/* =========================
+   MAIN PANEL
+========================= */
+
+.warning-panel {
+    width: min(850px, 94vw);
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffef5 0%,
+            #fffdf0 50%,
+            #fff9dc 100%
+        );
+
+    border: 3px solid #e7cf68;
+
+    border-radius: 30px;
+
+    padding: 45px 50px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 35px rgba(231,207,104,.35);
+
+    transform: scale(.82);
+    opacity: 0;
+
+    animation: warningPop .45s cubic-bezier(.17,.89,.32,1.28)
+               forwards;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.warning-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* =========================
+   ORANGE WARNING ICON
+========================= */
+
+.warning-icon {
+    flex-shrink: 0;
+
+    width: 82px;
+    height: 72px;
+
+    background: #e78300;
+
+    clip-path: polygon(
+        50% 0%,
+        96% 88%,
+        4% 88%
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    filter:
+        drop-shadow(0 7px 8px rgba(0,0,0,.2));
+
+    animation: iconPulse 1.8s ease-in-out infinite;
+}
+
+.warning-icon span {
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 47px;
+    font-weight: 900;
+
+    margin-top: 14px;
+}
+
+
+/* =========================
+   KHMER TITLE
+========================= */
+
+.warning-title {
+    color: #d87500;
+
+    font-size: clamp(30px, 5vw, 52px);
+
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    text-shadow:
+        0 2px 1px rgba(0,0,0,.04);
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.warning-message {
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 3px solid rgba(0,0,0,.08);
+
+    color: #3b3b3b;
+
+    font-size: clamp(17px, 2.5vw, 23px);
+
+    line-height: 1.8;
+
+    text-align: center;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.warning-button {
+    display: block;
+
+    margin: 30px auto 0;
+
+    padding: 13px 34px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #e78300;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 15px rgba(231,131,0,.3);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.warning-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(231,131,0,.4);
+}
+
+.warning-button:active {
+    transform: scale(.95);
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes overlayFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes warningPop {
+
+    0% {
+        opacity: 0;
+        transform:
+            scale(.75)
+            translateY(40px);
+    }
+
+    60% {
+        opacity: 1;
+        transform:
+            scale(1.04)
+            translateY(-5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+@keyframes iconPulse {
+
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .security-overlay {
+        padding: 15px;
+    }
+
+    .warning-panel {
+        width: 94vw;
+
+        padding: 30px 22px;
+
+        border-radius: 25px;
+    }
+
+    .warning-header {
+        gap: 18px;
+    }
+
+    .warning-icon {
+        width: 62px;
+        height: 57px;
+    }
+
+    .warning-icon span {
+        font-size: 36px;
+        margin-top: 11px;
+    }
+
+    .warning-title {
+        font-size: 27px;
+    }
+
+    .warning-message {
+        font-size: 16px;
+    }
+}
+</style>
+
+
+const securityWarning =
+    document.getElementById("securityWarning");
+
+
+/* SHOW WARNING */
+function showSecurityWarning() {
+
+    securityWarning.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+}
+
+
+/* CLOSE WARNING */
+function closeSecurityWarning() {
+
+    securityWarning.style.display = "none";
+
+    document.body.style.overflow = "";
+}
+
+
+/* =========================
+   RIGHT CLICK
+========================= */
+
+document.addEventListener("contextmenu", function(e) {
+
     e.preventDefault();
+
+    showSecurityWarning();
+
 });
 
-document.addEventListener("keydown", function (e) {
 
-    // F12
+/* =========================
+   LONG PRESS MOBILE
+========================= */
+
+let longPressTimer;
+
+document.addEventListener("touchstart", function() {
+
+    longPressTimer = setTimeout(function() {
+
+        showSecurityWarning();
+
+    }, 650);
+
+}, { passive: true });
+
+
+document.addEventListener("touchend", function() {
+
+    clearTimeout(longPressTimer);
+
+});
+
+
+document.addEventListener("touchmove", function() {
+
+    clearTimeout(longPressTimer);
+
+});
+
+
+/* =========================
+   DEVTOOLS SHORTCUTS
+========================= */
+
+document.addEventListener("keydown", function(e) {
+
+    const key = e.key.toLowerCase();
+
+
+    /* F12 */
     if (e.key === "F12") {
+
         e.preventDefault();
-        return false;
+
+        showSecurityWarning();
+
+        return;
     }
 
-    // Ctrl + Shift + I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+
+    /* CTRL + SHIFT + I */
+    if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === "i"
+    ) {
+
         e.preventDefault();
-        return false;
+
+        showSecurityWarning();
+
+        return;
     }
 
-    // Ctrl + Shift + J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
+
+    /* CTRL + SHIFT + J */
+    if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === "j"
+    ) {
+
         e.preventDefault();
-        return false;
+
+        showSecurityWarning();
+
+        return;
     }
 
-    // Ctrl + Shift + C
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
+
+    /* CTRL + SHIFT + C */
+    if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === "c"
+    ) {
+
         e.preventDefault();
-        return false;
+
+        showSecurityWarning();
+
+        return;
     }
 
-    // Ctrl + U
-    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+
+    /* CTRL + U */
+    if (
+        e.ctrlKey &&
+        key === "u"
+    ) {
+
         e.preventDefault();
-        return false;
+
+        showSecurityWarning();
+
+        return;
     }
+
 });
 
-document.addEventListener("dragstart", function(e) {
-    e.preventDefault();
-});
+
+/* =========================
+   DEVTOOLS SIZE DETECTION
+========================= */
+
+setInterval(function() {
+
+    const widthDifference =
+        window.outerWidth - window.innerWidth;
+
+    const heightDifference =
+        window.outerHeight - window.innerHeight;
+
+
+    if (
+        widthDifference > 160 ||
+        heightDifference > 160
+    ) {
+
+        showSecurityWarning();
+
+    }
+
+}, 1000);
 
 </script></body></html>
