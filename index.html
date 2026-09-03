@@ -1178,32 +1178,6 @@ function updateHeroClock(){
 updateHeroClock();setInterval(updateHeroClock,1000);
 year.textContent=new Date().getFullYear();updateDeviceStatus();updateBattery();updateRegion();addEventListener("online",updateDeviceStatus);addEventListener("offline",updateDeviceStatus);loadSiteSettings();load();
 
-<!-- SECURITY WARNING -->
-<div id="securityWarning" class="security-overlay">
-    <div class="warning-panel">
-
-        <div class="warning-header">
-            <div class="warning-icon">
-                <span>!</span>
-            </div>
-
-            <div class="warning-title">
-                មានការព្រមានការពារ
-            </div>
-        </div>
-
-        <div class="warning-message">
-            មុខងារនេះមិនត្រូវបានអនុញ្ញាត
-            <br>
-            សូមកុំប្រើ Inspect ឬសង្កត់ជាប់លើទំព័រនេះ។
-        </div>
-
-        <button class="warning-button" onclick="closeSecurityWarning()">
-            យល់ព្រម
-        </button>
-
-    </div>
-</div>
 
 
 const securityWarning =
